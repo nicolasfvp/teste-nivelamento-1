@@ -89,7 +89,7 @@ export default function ResetPassword() {
           {successMessage && <p className="text-green-500 text-sm mt-1">{successMessage}</p>}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
+            className="w-full bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition duration-200"
           >
             Alterar Senha
           </button>

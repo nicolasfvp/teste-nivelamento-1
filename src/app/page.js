@@ -64,7 +64,7 @@ export default function Login() {
       const user = users.find(user => user.email === email && user.password === password);
 
       if (user) {
-        router.push('/success'); 
+        router.push('/dashboard'); 
       } else {
         setEmailError('E-mail ou senha incorretos.');
       }
@@ -139,7 +139,7 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
+            className="w-full bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition duration-200"
           >
             Login
           </button>
@@ -174,7 +174,7 @@ export default function Login() {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600"
+                  className="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600"
                 >
                   Enviar Link
                 </button>
@@ -194,7 +194,7 @@ export default function Login() {
                 <Link href="/reset-password">
                   <button
                   onClick={() => setShowEmailSentModal(false)} 
-                  className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600">
+                  className="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600">
                   OK
                   </button>
                 </Link>
