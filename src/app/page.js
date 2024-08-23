@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import Link from 'next/link';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -89,7 +91,6 @@ export default function Login() {
     }
   };
 
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -132,8 +133,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setShowForgotPassword(true)}
-              className="text-blue-500 text-sm"
-            >
+              className="text-blue-500 text-sm">
               Esqueci minha senha
             </button>
           </div>
@@ -145,6 +145,7 @@ export default function Login() {
           </button>
         </form>
       </div>
+
       {/* Modal de Recuperação de Senha */}
       {showForgotPassword && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -190,12 +191,14 @@ export default function Login() {
             <h3 className="text-xl text-gray-700 font-bold mb-4">E-mail Enviado</h3>
             <p className="text-x1 text-gray-700">Um link de recuperação de senha foi enviado para o seu e-mail.</p>
             <div className="flex justify-end mt-4">
-              <button
-                onClick={() => setShowEmailSentModal(false)}
-                className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600"
-              >
-                OK
-              </button>
+                <Link href="/reset-password">
+                  <button
+                  onClick={() => setShowEmailSentModal(false)} 
+                  className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600">
+                  OK
+                  </button>
+                </Link>
+                
             </div>
           </div>
         </div>
