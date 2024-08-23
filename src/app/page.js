@@ -1,12 +1,27 @@
-'use client';
+"use client"
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); 
+
+  const router = useRouter();
+
+  // Lista de usuários padrão
+
+  const users = [
+    { email: 'usuario1@gmail.com', password: 'Senha123!' },
+    { email: 'usuario2@gmail.com', password: 'Senha123@' }, 
+    { email: 'usuario3@gmail.com', password: 'Senha123#' },
+  ]; 
+
+  //regex de email e senha
 
   const validateEmail = (email) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -18,28 +33,35 @@ export default function Login() {
     return passwordRegex.test(password);
   };
 
+  //verificação de email e senha no login
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     let valid = true;
 
     if (!validateEmail(email)) {
-      setEmailError('Por favor, insira um e-mail válido.');
+      setEmailError('E-mail inválido. Insira um endereço de e-mail no formato correto.');
       valid = false;
     } else {
       setEmailError('');
     }
 
     if (!validatePassword(password)) {
-      setPasswordError('A senha deve conter entre 8 e 32 caracteres, incluindo letras maiúsculas, minúsculas, números e um caractere especial.');
+      setPasswordError('Senha inválida. Verifique se a senha tem pelo menos 8 caracteres, com letras maiúsculas, minúsculas, números e caracteres especiais');
       valid = false;
     } else {
       setPasswordError('');
     }
 
     if (valid) {
-      // Logica de login
-      alert('Login bem-sucedido!');
+      const user = users.find(user => user.email === email && user.password === password);
+
+      if (user) {
+        router.push('/success'); 
+      } else {
+        setEmailError('E-mail ou senha incorretos.');
+      }
     }
   };
 
@@ -54,20 +76,31 @@ export default function Login() {
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
               placeholder="Digite seu e-mail"
+              autoComplete="off"
             />
             {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700 text-sm font-bold mb-2">Senha</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite sua senha"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 pr-12" 
+                placeholder="Digite sua senha"
+                maxLength={32}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center px-3" 
+              >
+                {showPassword ? <FaEyeSlash className="text-gray-500" /> : <FaEye className="text-gray-500" />}
+              </button>
+            </div>
             {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
           </div>
           <div className="mb-4 text-right">
