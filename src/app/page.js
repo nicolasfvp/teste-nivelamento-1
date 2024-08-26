@@ -41,7 +41,7 @@ export default function Login() {
 
   //verificação de e-mail e senha no login
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let valid = true;
@@ -60,14 +60,25 @@ export default function Login() {
       setPasswordError('');
     }
 
-    if (valid) {
-      const user = users.find(user => user.email === email && user.password === password);
+    try {
+      const response = await fetch('http://localhost:5000/api/Account/login', {
+        method: 'POST',
+        headers: {
+          'Accept': '8/*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, senha: password }),
+      });
 
-      if (user) {
-        router.push('/dashboard'); 
-      } else {
-        setEmailError('E-mail ou senha incorretos.');
+      if (!response.ok) {
+        throw new Error('Falha na autenticação');
       }
+
+      const data = await response.json();
+      
+      router.push('/dashboard');  
+    } catch (error) {
+      setLoginError('Credenciais inválidas. Verifique seu e-mail e senha e tente novamente.');
     }
   };
 
@@ -93,8 +104,7 @@ export default function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm max-h-xs">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
