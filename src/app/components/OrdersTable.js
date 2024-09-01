@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { FaTrash } from 'react-icons/fa';
 
 const OrdersTable = ({ orders }) => {
   const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
@@ -19,6 +20,27 @@ const OrdersTable = ({ orders }) => {
 
   const handlePrev = () => setCurrentPage(Math.max(currentPage - 1, 0));
   const handleNext = () => setCurrentPage(Math.min(currentPage + 1, paginatedOrders.length - 1));
+
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/Account/put-orders', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao deletar o pedido');
+      }
+  
+      window.location.reload();
+    } catch (error) {
+      console.error('Erro ao deletar o pedido:', error);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 bg-gray-100">
@@ -57,7 +79,14 @@ const OrdersTable = ({ orders }) => {
                   <td className="text-gray-700 py-2 px-4">{order.date}</td>
                   <td className="text-gray-700 py-2 px-4">{order.paymentMethod}</td>
                   <td className="text-gray-700 py-2 px-4">{order.status}</td>
-                  <td className="text-gray-700 py-2 px-4">{/* Ação */}</td>
+                  <td className="text-gray-700 py-2 px-4">
+                    {order.status === 'Entregue' ? (
+                    <button onClick={() => handleDelete(order.id)} className="text-red-600 hover:text-red-800">
+                      <FaTrash />
+                    </button>
+                  ) : (
+                    <span>-</span>
+                )}</td>
                 </>
               ) : (
                 <>
