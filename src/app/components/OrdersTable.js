@@ -22,7 +22,7 @@ const OrdersTable = ({ orders }) => {
 
   return (
     <div className="container mx-auto px-4 bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">Lista de pedidos</h1>
+      <h1 className="text-gray-700 text-2xl font-bold mb-4">Lista de pedidos</h1>
       <div className="flex items-center mb-4">
         <input type="text" placeholder="Buscar..." className="border rounded-l-md py-2 px-4 flex-grow" />
         <button className="bg-orange-500 text-white rounded-r-md py-2 px-4">Filtrar</button>
@@ -33,12 +33,12 @@ const OrdersTable = ({ orders }) => {
           <tr className="bg-gray-100">
             {!isMobile ? (
               <>
-                <th className="py-2 px-4 border-b">Num. Pedido</th>
-                <th className="py-2 px-4 border-b">Valor</th>
-                <th className="py-2 px-4 border-b">Data</th>
-                <th className="py-2 px-4 border-b">Forma de pagamento</th>
-                <th className="py-2 px-4 border-b">Status</th>
-                <th className="py-2 px-4 border-b">Ação</th>
+                <th className="text-gray-700 py-2 px-4 border-b">Num. Pedido</th>
+                <th className="text-gray-700 py-2 px-4 border-b">Valor</th>
+                <th className="text-gray-700 py-2 px-4 border-b">Data</th>
+                <th className="text-gray-700 py-2 px-4 border-b">Forma de pagamento</th>
+                <th className="text-gray-700 py-2 px-4 border-b">Status</th>
+                <th className="text-gray-700 py-2 px-4 border-b">Ação</th>
               </>
             ) : (
               <>
@@ -52,12 +52,12 @@ const OrdersTable = ({ orders }) => {
             <tr key={index} className="border-b">
               {!isMobile ? (
                 <>
-                  <td className="py-2 px-4">{order.id}</td>
-                  <td className="py-2 px-4">{order.value}</td>
-                  <td className="py-2 px-4">{order.date}</td>
-                  <td className="py-2 px-4">{order.paymentMethod}</td>
-                  <td className="py-2 px-4">{order.status}</td>
-                  <td className="py-2 px-4">{/* Ação */}</td>
+                  <td className="text-blue-400 py-2 px-4">{order.id}</td>
+                  <td className="text-gray-700 py-2 px-4">{order.value}</td>
+                  <td className="text-gray-700 py-2 px-4">{order.date}</td>
+                  <td className="text-gray-700 py-2 px-4">{order.paymentMethod}</td>
+                  <td className="text-gray-700 py-2 px-4">{order.status}</td>
+                  <td className="text-gray-700 py-2 px-4">{/* Ação */}</td>
                 </>
               ) : (
                 <>

@@ -1,27 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaBars, FaArrowRight, FaUser, FaHome, FaBell, FaCog, FaChartLine, FaEnvelope, FaFolderOpen, FaCalendar, FaSearch, FaListAlt, FaBox, FaClipboardList, FaChartBar } from 'react-icons/fa';
 import OrdersTable from '../components/OrdersTable';
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
+  const [orders, setOrders] = useState([]);
+  const [metrics, setMetrics] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
   const router = useRouter();
-  const orders = [
-    { id: '001', value: 'R$ 100,00', date: '01/08/2024', paymentMethod: 'Cartão', status: 'Pago' },
-    { id: '002', value: 'R$ 200,00', date: '02/08/2024', paymentMethod: 'Boleto', status: 'Pendente' },
-    { id: '001', value: 'R$ 100,00', date: '01/08/2024', paymentMethod: 'Cartão', status: 'Pago' },
-    { id: '002', value: 'R$ 200,00', date: '02/08/2024', paymentMethod: 'Boleto', status: 'Pendente' },
-    { id: '001', value: 'R$ 100,00', date: '01/08/2024', paymentMethod: 'Cartão', status: 'Pago' },
-    { id: '002', value: 'R$ 200,00', date: '02/08/2024', paymentMethod: 'Boleto', status: 'Pendente' },
-    { id: '001', value: 'R$ 100,00', date: '01/08/2024', paymentMethod: 'Cartão', status: 'Pago' },
-    { id: '002', value: 'R$ 200,00', date: '02/08/2024', paymentMethod: 'Boleto', status: 'Pendente' },
-    
-  ];
+  
   const handleRedirect = (page) => {
     router.push(page);
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [metricsRes, ordersRes] = await Promise.all([
+          fetch('http://localhost:5000/api/Account/get-metrics'),
+          fetch('http://localhost:5000/api/Account/get-orders'),
+        ]);
+
+        const metricsData = await metricsRes.json();
+        const ordersData = await ordersRes.json();
+
+        setOrders(ordersData);
+        setMetrics(metricsData);
+      } catch (error) {
+        console.error('Erro ao buscar os dados:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Carregando...</div>;
   }
   return (
     <div className="flex min-h-lvh bg-gray-100">
@@ -113,21 +133,24 @@ export default function Layout() {
               <FaChartBar className="text-blue-600 mr-4" size={48} />
               <div className="flex flex-col justify-center">
                 <span className="text-gray-700 text-xl">Hoje</span>
-                <span className="text-gray-700 text-lg">100 pedidos para entrega</span>
+                <span className="text-gray-700 text-lg">{metrics[0].orders}</span>
+                <span className="text-gray-700 text-lg">pedidos para entrega</span>
               </div>
             </div>
             <div className="col-span-1 bg-white p-4 rounded-lg shadow-md">
               <span className="text-gray-700 text-xl">Total </span>
-              <span className="text-gray-700 text-lg">100 Produtos</span>
+              <span className="text-gray-700 text-lg">{metrics[0].total}</span>
+              <span className="text-gray-700 text-lg">Produtos</span>
             </div>
             <div className="col-span-1 bg-white p-4 rounded-lg shadow-md">
               <span className="text-gray-700 text-xl">Total</span>
-              <span className="text-gray-700 text-lg">2</span>
+              <span className="text-gray-700 text-lg">{metrics[0].stock}</span>
               <span className="text-gray-700 text-lg">Estoque Mínimo</span>
             </div>
             <div className="col-span-2 bg-white p-4 rounded-lg shadow-md">
               <span className="text-gray-700 text-xl">Total</span>
-              <span className="text-gray-700 text-lg">100 Clientes</span>
+              <span className="text-gray-700 text-lg">{metrics[0].users}</span>
+              <span className="text-gray-700 text-lg">Clientes</span>
             </div>
         </div>
         <div className='bg-gray-100 p-4 shadow-md overflow-x-auto'>
