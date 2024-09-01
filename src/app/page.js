@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 import Link from 'next/link';
@@ -11,6 +11,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [loginError, setLoginError] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
@@ -18,6 +19,30 @@ export default function Login() {
   const [showEmailSentModal, setShowEmailSentModal] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      fetch('http://localhost:5000/api/Account/auth-token', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if(response.ok){
+            router.push('/dashboard');
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao validar o token:', error); 
+          localStorage.removeItem('token');
+        });
+    }
+  }, [router]);
+
 
   // Lista de usuários padrão
 
@@ -68,13 +93,14 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, senha: password }),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.token) {
+          console.log(data.token)
+          localStorage.setItem('token', data.token);
+        }
       });
-
-      if (!response.ok) {
-        throw new Error('Falha na autenticação');
-      }
-
-      const data = await response.json();
       
       router.push('/dashboard');  
     } catch (error) {
@@ -138,6 +164,7 @@ export default function Login() {
               </button>
             </div>
             {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
+            {loginError && <p className="text-red-500 text-sm mt-1">{loginError}</p>}
           </div>
           <div className="mb-4 text-right">
             <button
