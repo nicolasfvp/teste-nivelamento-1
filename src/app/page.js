@@ -22,7 +22,7 @@ export default function Login() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
+    console.log(token)
     if (token) {
       fetch('http://localhost:5000/api/Account/auth-token', {
         method: 'POST',
@@ -82,25 +82,27 @@ export default function Login() {
       const response = await fetch('http://localhost:5000/api/Account/login', {
         method: 'POST',
         headers: {
-          'Accept': '8/*',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, senha: password }),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.token) {
-          console.log(data.token)
-          localStorage.setItem('token', data.token);
-        }
       });
-      
-      router.push('/dashboard');  
+    
+      const data = await response.json();
+    
+      if (response.ok && data.token) {
+        console.log(data.token);
+        localStorage.setItem('token', data.token);
+        router.push('/dashboard');
+      } else {
+        // Se a resposta não for ok, lançar um erro
+        throw new Error(data.message || 'Erro ao fazer login.');
+      }
     } catch (error) {
+      // Aqui o erro será capturado
       setLoginError('Credenciais inválidas. Verifique seu e-mail e senha e tente novamente.');
     }
   };
-
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

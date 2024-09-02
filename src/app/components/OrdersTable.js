@@ -296,14 +296,14 @@ const OrdersTable = ({ orders }) => {
                     <div className="flex flex-col"><strong>Data</strong> {order.date}</div>
                   </div>
                   
-                  <td className={`text-center rounded-full w-[80vw] h-[2vh] ${
+                  <div className={`text-center rounded-full items-baseline w-[80vw] h-[2vh] ${
                     order.status.toLowerCase() === 'entregue' ? 'text-green-600 bg-green-200' :
                     order.status.toLowerCase() === 'em preparação' ? 'text-blue-600 bg-blue-200' :
                     order.status.toLowerCase() === 'em entrega' ? 'text-orange-600 bg-orange-200' :
                     'bg-gray-300'
                   }`}>
                     {order.status}
-                  </td>
+                  </div>
                 </td>
               )}
             </tr>
