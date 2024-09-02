@@ -166,7 +166,13 @@ export default function Login() {
             {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
             {loginError && <p className="text-red-500 text-sm mt-1">{loginError}</p>}
           </div>
-          <div className="mb-4 text-right">
+          <div className="mb-4 flex justify-between">
+            <button
+              type="button"
+              onClick={() => router.push('/cadastro')}
+              className="text-blue-500 text-sm">
+              Cadastrar
+            </button>
             <button
               type="button"
               onClick={() => setShowForgotPassword(true)}

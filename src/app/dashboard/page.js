@@ -9,7 +9,7 @@ import { FaBars, FaUser } from 'react-icons/fa';
 import OrdersTable from '../components/OrdersTable';
 
 export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [metrics, setMetrics] = useState([]);
   const [loading, setLoading] = useState(true);

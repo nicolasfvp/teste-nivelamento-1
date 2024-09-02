@@ -85,6 +85,22 @@ const OrdersTable = ({ orders }) => {
   //paginação
   const renderPagination = () => {
     const totalPages = paginatedOrders.length;
+  
+    if (isMobile) {
+      return (
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault(); 
+            setCurrentPage(currentPage);
+          }}
+          className="mx-1 px-3 py-1 rounded bg-orange-100 text-orange-600"
+        >
+          {currentPage + 1}
+        </a>
+      );
+    }
+  
     const pageLinks = [];
   
     const renderPageLink = (pageIndex) => (
@@ -111,7 +127,6 @@ const OrdersTable = ({ orders }) => {
     }
   
     for (let i = Math.max(currentPage, 1); i < Math.min(currentPage + 2, totalPages); i++) {
-      
       pageLinks.push(renderPageLink(i));
     }
   
@@ -275,11 +290,20 @@ const OrdersTable = ({ orders }) => {
                 </>
               ) : (
                 <td className="py-2 px-4 text-left">
-                  <div><strong>Num. Pedido:</strong> {order.id}</div>
-                  <div><strong>Valor:</strong> {order.value}</div>
-                  <div><strong>Data:</strong> {order.date}</div>
-                  <div><strong>Forma de pagamento:</strong> {order.paymentMethod}</div>
-                  <div><strong>Status:</strong> {order.status}</div>
+                  <div className="flex flex-row justify-around">
+                    <div className="flex flex-col text-blue-400"><strong className="text-gray-800">Num. Pedido</strong> {order.id}</div>
+                    <div className="flex flex-col"><strong>Valor</strong> {order.value}</div>
+                    <div className="flex flex-col"><strong>Data</strong> {order.date}</div>
+                  </div>
+                  
+                  <td className={`text-center rounded-full w-[80vw] h-[2vh] ${
+                    order.status.toLowerCase() === 'entregue' ? 'text-green-600 bg-green-200' :
+                    order.status.toLowerCase() === 'em preparação' ? 'text-blue-600 bg-blue-200' :
+                    order.status.toLowerCase() === 'em entrega' ? 'text-orange-600 bg-orange-200' :
+                    'bg-gray-300'
+                  }`}>
+                    {order.status}
+                  </td>
                 </td>
               )}
             </tr>
