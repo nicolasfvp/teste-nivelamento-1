@@ -44,13 +44,6 @@ export default function Login() {
   }, [router]);
 
 
-  // Lista de usuários padrão
-
-  const users = [
-    { email: 'usuario1@gmail.com', password: 'Senha123!' },
-    { email: 'usuario2@gmail.com', password: 'Senha123@' }, 
-    { email: 'usuario3@gmail.com', password: 'Senha123#' },
-  ]; 
 
   //regex de email e senha
 
@@ -108,25 +101,6 @@ export default function Login() {
     }
   };
 
-  //verificação de e-mail no recuperar senha
-  const handleForgotPassword = (e) => {
-    e.preventDefault();
-
-    if (!validateEmail(forgotEmail)) {
-      setForgotEmailError('E-mail inválido. Insira um endereço de e-mail no formato correto.');
-    } else {
-      const user = users.find(user => user.email === forgotEmail)
-      if(user){
-        setForgotEmailError('');
-        setShowForgotPassword(false);
-        setShowEmailSentModal(true);
-        // Lógica para enviar e-mail de recuperação
-      } else{
-        setForgotEmailError('E-mail inválido. Este endereço de e-mail não está cadastrado no sistema, verifique e tente novamente.')
-      }
-       
-    }
-  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -194,7 +168,7 @@ export default function Login() {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
             <h3 className="text-xl text-gray-700 font-bold mb-4">Recuperar Senha</h3>
-            <form onSubmit={handleForgotPassword}>
+            <form>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
                 <input
